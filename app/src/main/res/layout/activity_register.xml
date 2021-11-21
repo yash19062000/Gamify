@@ -29,7 +29,7 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         android:padding="10dp"
-        android:text="Email"
+        android:hint="Email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registerName" />
 
@@ -42,7 +42,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:padding="10dp"
-        android:text="User Name"
+        android:hint="User Name"
         app:layout_constraintEnd_toEndOf="@+id/registerEmail"
         app:layout_constraintStart_toStartOf="@+id/registerEmail"
         app:layout_constraintTop_toBottomOf="@+id/registerEmail" />
@@ -71,7 +71,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:padding="10dp"
-        android:text="Full Name"
+        android:hint="Full Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
