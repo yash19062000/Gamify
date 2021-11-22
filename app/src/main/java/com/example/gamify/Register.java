@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class Register extends AppCompatActivity {
@@ -24,6 +26,8 @@ public class Register extends AppCompatActivity {
     Button rBtn;
     TextView cText;
     FirebaseAuth fAuth;
+    DatabaseReference mDatabase;
+
 
 
     @Override
@@ -39,6 +43,7 @@ public class Register extends AppCompatActivity {
         cText = findViewById(R.id.createText);
 
         fAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         if(fAuth.getCurrentUser()!=null){
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -71,16 +76,15 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task){
                         if(task.isSuccessful()){
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            mDatabase.child("Users").child(rUserName.getText().toString()).child("Name").setValue(rName.getText().toString());
+                            // After registration, we should redirect user to input profile information to add to the database
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }
-                        else{
+                        else {
                             Toast.makeText(Register.this, "Error: "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
-
-
             }
         });
 
