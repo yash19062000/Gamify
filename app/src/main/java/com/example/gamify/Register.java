@@ -77,7 +77,13 @@ public class Register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task){
                         if(task.isSuccessful()){
                             mDatabase.child("Users").child(rUserName.getText().toString()).child("Name").setValue(rName.getText().toString());
-                            // After registration, we should redirect user to input profile information to add to the database
+                            /*
+                            TODO: REMOVE CODE AFTER TESTING
+                            GroupManager manager = new GroupManager();
+                            manager.createGroup("default_group", "default_game", rUserName.getText().toString());
+                            manager.joinGroup("default_group", "tejasv2");
+                            */
+
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }
                         else {
