@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private ArrayList<String> listOfGroups = new ArrayList<>();
     private DatabaseReference groupRef;
+    private Button createGroupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,17 @@ public class MainActivity extends AppCompatActivity {
         initFields();
 
         displayGroups();
+
+        createGroupButton = (Button) findViewById(R.id.createGroup);
+        createGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), CreateGroupActivity.class);
+                intent.putExtra("username", FirebaseAuth.getInstance().getCurrentUser());
+                v.getContext().startActivity(intent);
+            }
+        });
+
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnav);
 
