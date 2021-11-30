@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,13 +21,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
-    EditText rName, rEmail, rPassword, rUserName;
-    Button rBtn;
-    TextView cText;
-    FirebaseAuth fAuth;
-    DatabaseReference mDatabase;
-
-
+    public EditText rUserName;
+    private EditText rName, rEmail, rPassword;
+    private Button rBtn;
+    private TextView cText;
+    private FirebaseAuth fAuth;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +74,9 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task){
                         if(task.isSuccessful()){
-                            mDatabase.child("Users").child(rUserName.getText().toString()).child("Name").setValue(rName.getText().toString());
-                            // After registration, we should redirect user to input profile information to add to the database
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            mDatabase.child("Users").child(fAuth.getCurrentUser().getUid()).child("Full Name").setValue(rName.getText().toString());
+                            mDatabase.child("Users").child(fAuth.getCurrentUser().getUid()).child("Username").setValue(rUserName.getText().toString());
+                            startActivity(new Intent(getApplicationContext(), ProfilePage.class));
                         }
                         else {
                             Toast.makeText(Register.this, "Error: "+ task.getException().getMessage(), Toast.LENGTH_SHORT).show();

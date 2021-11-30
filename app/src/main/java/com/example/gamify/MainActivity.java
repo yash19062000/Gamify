@@ -27,20 +27,15 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.search:
                         break;
                     case R.id.chat:
-                        Intent i = new Intent(getApplicationContext(),ChatList.class);
-                        startActivity(i);
+                        startActivity(new Intent(getApplicationContext(),ChatList.class));
                         break;
                     case R.id.profile:
-                        Intent i1 = new Intent(getApplicationContext(),UserProfile.class);
-                        startActivity(i1);
+                        startActivity(new Intent(getApplicationContext(),UserProfile.class));
                         break;
                 }
                 return false;
             }
         });
-
-
-
     }
 
     public void logout(View v){

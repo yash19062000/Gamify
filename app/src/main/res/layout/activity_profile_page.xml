@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfilePage"
+    android:background="@drawable/background">
+
+    <TextView
+        android:id="@+id/textview_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:textSize="40sp"
+        android:textColor="#000000"
+        android:textStyle="bold|italic"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="100dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_profile_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_baseline_emoji_emotions_24" />
+
+    <Button
+        android:id="@+id/set_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_profile_pic"
+        android:layout_marginLeft="185dp"
+        android:layout_marginTop="-10dp"
+        android:background="@android:color/transparent"
+        android:text="Set Profile Picture"
+        android:textColor="#000"
+        android:textSize="8dp" />
+
+
+    <TextView
+        android:id="@+id/textview_game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_profile"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="95dp"
+        android:text="Games"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/textview_preference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_game"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="50dp"
+        android:text="Online/Offline"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/textview_dob"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date of Birth"
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:textStyle="bold|italic"
+        android:layout_below="@id/textview_preference"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="50dp"/>
+
+    <EditText
+        android:id="@+id/games"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/textview_profile"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="90dp"
+        android:background="@color/white"
+        android:hint="Game you like..."
+        android:padding="10dp" />
+
+    <Spinner
+        android:id="@+id/pref"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_below="@id/games"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="35dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
+    <EditText
+        android:id="@+id/dob"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/pref"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="35dp"
+        android:background="@color/white"
+        android:hint="DD/MM/YYYY"
+        android:inputType="number"
+        android:padding="10dp" />
+
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Profile"
+        android:onClick="save"
+        android:layout_below="@id/dob"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
+
+
+
+</RelativeLayout>
