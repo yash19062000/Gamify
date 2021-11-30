@@ -12,6 +12,10 @@ public class Group {
         this.game = game;
     }
 
+    public Group() {
+
+    }
+
     public String getGame() {
         return game;
     }
@@ -19,4 +23,6 @@ public class Group {
     public ArrayList<String> getPeople() {
         return people;
     }
+
+
 }

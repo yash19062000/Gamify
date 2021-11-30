@@ -15,6 +15,9 @@
             android:name=".ProfilePage"
             android:exported="false" />
         <activity
+            android:name=".CreateGroupActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserProfile"
             android:exported="true" />
         <activity
