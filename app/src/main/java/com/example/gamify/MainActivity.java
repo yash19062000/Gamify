@@ -2,10 +2,12 @@ package com.example.gamify;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.text.Edits;
 import android.nfc.Tag;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> listOfGroups = new ArrayList<>();
     private DatabaseReference groupRef;
     private Button createGroupButton;
+    private GroupManager manager;
+    private FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         groupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
+        manager = new GroupManager();
+        fAuth = FirebaseAuth.getInstance();
 
         initFields();
 
@@ -90,7 +97,33 @@ public class MainActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfGroups);
         groupsListView.setAdapter(arrayAdapter);
 
+        groupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String groupName = listOfGroups.get(position);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Join " + groupName + "?");
+                builder.setCancelable(true);
 
+                builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String user = fAuth.getCurrentUser().toString();
+                        manager.joinGroup(groupName, user);
+                        dialog.cancel();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 
     private void displayGroups() {
