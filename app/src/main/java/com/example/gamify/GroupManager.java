@@ -1,5 +1,7 @@
 package com.example.gamify;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -10,14 +12,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GroupManager {
 
     private DatabaseReference mDatabase;
+    private DatabaseReference usersRef;
 
     public GroupManager() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
     }
 
 
@@ -25,14 +30,34 @@ public class GroupManager {
         ArrayList<String> users = new ArrayList<>();
         users.add(user);
         mDatabase.child("Groups").child(groupName).child("Game").setValue(game);
-        joinGroup(groupName, user);
+        usersRef = mDatabase.child("Groups").child("Users");
+        ValueEventListener valueEventListener = new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<String> users = new ArrayList<>();
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    String user = snapshot.getValue(String.class);
+                    users.add(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i("JOIN FALED ", error.getMessage());
+            }
+        };
+        usersRef.addListenerForSingleValueEvent(valueEventListener);
+        //joinGroup(game, user);
     }
 
     public void joinGroup(String groupName, String user) {
+
         String index = mDatabase.child("Groups").child(groupName).child("Users").push().getKey();
         Map<String, Object> map = new HashMap<>();
         map.put(index, user);
         mDatabase.child("Groups").child(groupName).child("Users").updateChildren(map);
+
     }
 
 

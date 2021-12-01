@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), CreateGroupActivity.class);
-                intent.putExtra("username", FirebaseAuth.getInstance().getCurrentUser());
+                intent.putExtra("username", fAuth.getCurrentUser().getUid());
                 v.getContext().startActivity(intent);
             }
         });
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String user = fAuth.getCurrentUser().toString();
+                        String user = fAuth.getCurrentUser().getUid();
                         manager.joinGroup(groupName, user);
                         dialog.cancel();
                     }
