@@ -48,7 +48,7 @@ public class GroupManager {
             }
         };
         usersRef.addListenerForSingleValueEvent(valueEventListener);
-        //joinGroup(game, user);
+//        joinGroup(game, user);
     }
 
     public void joinGroup(String groupName, String user) {
