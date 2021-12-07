@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Button createGroupButton;
     private GroupManager manager;
     private FirebaseAuth fAuth;
+    private String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         groupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
         manager = new GroupManager();
         fAuth = FirebaseAuth.getInstance();
-
+        currentUserID = fAuth.getCurrentUser().getUid();
         // test commit v3
 
         initFields();
@@ -110,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String user = fAuth.getCurrentUser().getUid();
-                        manager.joinGroup(groupName, user);
+                        manager.joinGroup(groupName, currentUserID);
+
                         dialog.cancel();
                     }
                 });
@@ -136,7 +137,26 @@ public class MainActivity extends AppCompatActivity {
                 Iterator it = snapshot.getChildren().iterator();
 
                 while(it.hasNext()) {
-                    set.add(((DataSnapshot) it.next()).getKey());
+//                    set.add(((DataSnapshot) it.next()).getKey());
+                    DataSnapshot ds = (DataSnapshot) it.next();
+                    Iterator it1 = ds.getChildren().iterator();
+                    Iterator it2 = null;
+                    while(it1.hasNext()){
+                        it2 = ((DataSnapshot) it1.next()).getChildren().iterator();
+                    }
+                    boolean ifPresentInGroup = false;
+                    while(it2.hasNext()){
+                        String uKey = (String) ((DataSnapshot)it2.next()).getValue();
+                        if(uKey.compareTo(currentUserID)==0){
+                            ifPresentInGroup=true;
+                            break;
+                        }
+                    }
+                    if(!ifPresentInGroup){
+                        set.add(ds.getKey());
+                    }
+
+
                 }
 
                 listOfGroups.clear();
