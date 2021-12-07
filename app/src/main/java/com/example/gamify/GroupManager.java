@@ -51,11 +51,11 @@ public class GroupManager {
 //        joinGroup(game, user);
     }
 
-    public void joinGroup(String groupName, String user) {
+    public void joinGroup(String groupName, String userID) {
 
         String index = mDatabase.child("Groups").child(groupName).child("Users").push().getKey();
         Map<String, Object> map = new HashMap<>();
-        map.put(index, user);
+        map.put(index, userID);
         mDatabase.child("Groups").child(groupName).child("Users").updateChildren(map);
 
     }
