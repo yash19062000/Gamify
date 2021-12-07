@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         manager = new GroupManager();
         fAuth = FirebaseAuth.getInstance();
 
-        // test commit v1
+        // test commit v2
 
         initFields();
 
