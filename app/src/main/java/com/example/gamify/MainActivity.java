@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -93,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        AutoCompleteTextView searchBar = findViewById(R.id.search_groups);
+        ArrayAdapter<String> searchAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, listOfGroups);
+        searchBar.setAdapter(searchAdapter);
     }
 
     private void initFields() {
