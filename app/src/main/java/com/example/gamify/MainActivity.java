@@ -12,6 +12,8 @@ import android.content.Intent;
 import android.icu.text.Edits;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,10 +96,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        AutoCompleteTextView searchBar = findViewById(R.id.search_groups);
-        ArrayAdapter<String> searchAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, listOfGroups);
-        searchBar.setAdapter(searchAdapter);
+        EditText searchBar = findViewById(R.id.search_groups);
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                MainActivity.this.arrayAdapter.getFilter().filter(s);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void initFields() {

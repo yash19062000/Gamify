@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_profile"
     tools:context=".MainActivity">
 
-    <AutoCompleteTextView
+    <EditText
         android:id="@+id/search_groups"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:completionHint="Search Groups"
-        android:completionThreshold="1"
         android:hint=" Search Groups"
+        android:inputType="textVisiblePassword"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
