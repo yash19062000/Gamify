@@ -31,6 +31,7 @@ public class GroupManager {
         users.add(user);
         mDatabase.child("Groups").child(groupName).child("Game").setValue(game);
         usersRef = mDatabase.child("Groups").child("Users");
+        /*
         ValueEventListener valueEventListener = new ValueEventListener() {
 
             @Override
@@ -49,6 +50,8 @@ public class GroupManager {
         };
         usersRef.addListenerForSingleValueEvent(valueEventListener);
 //        joinGroup(game, user);
+
+         */
     }
 
     public void joinGroup(String groupName, String userID) {
