@@ -1,44 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateGroupActivity">
+    tools:context=".CreateGroupActivity"
+    android:background="@drawable/background">
 
-    <EditText
-        android:id="@+id/name"
+    <TextView
+        android:id="@+id/textview_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="46dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:text="Name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Create New Group"
+        android:textSize="40sp"
+        android:textColor="#000000"
+        android:textStyle="bold|italic"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="100dp" />
 
-    <EditText
+
+
+
+
+
+    <TextView
+        android:id="@+id/group_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textview_profile"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="95dp"
+        android:text="Name"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:id="@+id/textview_preference"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/group_name_text"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="50dp"
+        android:text="Online/Offline"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+
+    <TextView
         android:id="@+id/game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
         android:text="Game"
-        app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        android:textSize="20sp"
+        android:textColor="#000000"
+        android:textStyle="bold|italic"
+        android:layout_below="@id/textview_preference"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="50dp"/>
+
+    <EditText
+        android:id="@+id/group_name"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/textview_profile"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="90dp"
+        android:background="@color/white"
+        android:padding="10dp" />
+
+    <Spinner
+        android:id="@+id/pref"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_below="@id/group_name"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="35dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
+    <EditText
+        android:id="@+id/game_edit"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/pref"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="35dp"
+        android:background="@color/white"
+        android:padding="10dp" />
 
     <Button
-        android:id="@+id/create"
+        android:id="@+id/button_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="90dp"
         android:text="Create"
         android:onClick="createGroupRoutine"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_below="@id/game_edit"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
+
+
+
+</RelativeLayout>
