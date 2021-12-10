@@ -51,7 +51,7 @@ public class ProfilePage extends AppCompatActivity {
 
         preference = (Spinner) findViewById(R.id.pref);
         dob = (EditText) findViewById(R.id.dob);
-        games = (EditText) findViewById(R.id.games);
+        games = (EditText) findViewById(R.id.group_name);
         image = (CircleImageView) findViewById(R.id.img_profile_pic);
         set_picture = (Button) findViewById(R.id.set_picture);
         fAuth = FirebaseAuth.getInstance();
