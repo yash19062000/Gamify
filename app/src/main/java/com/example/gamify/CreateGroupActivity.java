@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CreateGroupActivity extends AppCompatActivity {
 
     private GroupManager manager;
@@ -20,6 +23,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     private Button create;
     private Spinner preference;
     private String selected_pref;
+    private EditText descEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +49,25 @@ public class CreateGroupActivity extends AppCompatActivity {
         name = (EditText) findViewById(R.id.group_name);
         game = (EditText) findViewById(R.id.game_edit);
         create = (Button) findViewById(R.id.button_confirm);
+        descEditText = (EditText) findViewById(R.id.description);
 
         manager = new GroupManager();
 
-
-
         String groupName = name.getText().toString();
         String groupGame = game.getText().toString();
+        String description = descEditText.getText().toString();
+
 
         Log.i("Group Name: " , groupName);
         Log.i("Game: ", groupGame);
 
         Bundle extras = getIntent().getExtras();
-        manager.createGroup(groupName, groupGame, extras.getString("username"), selected_pref);
+        manager.createGroup(groupName, groupGame, extras.getString("username"), selected_pref,
+                description);
         Intent intent = new Intent(CreateGroupActivity.this, MainActivity.class);
+        intent.putExtra("groupName", groupName);
+        intent.putExtra("description", description);
+        intent.putExtra("preference", selected_pref);
         startActivity(intent);
 
     }

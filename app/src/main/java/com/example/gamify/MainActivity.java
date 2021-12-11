@@ -36,9 +36,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
@@ -61,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         manager = new GroupManager();
         fAuth = FirebaseAuth.getInstance();
         currentUserID = fAuth.getCurrentUser().getUid();
-        // test commit v3
 
         initFields();
 
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), CreateGroupActivity.class);
                 intent.putExtra("username", fAuth.getCurrentUser().getUid());
                 v.getContext().startActivity(intent);
+
             }
         });
 
@@ -125,8 +127,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String groupName = listOfGroups.get(position);
+                final String[] description = {""};
+                DatabaseReference descRef = groupRef.child(groupName).child("Description");
+                descRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        description[0] = snapshot.getValue().toString();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                Log.i("DESCRIPTION", "Group: " + groupName + " Description: " +
+                        description[0]);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("Join " + groupName + "?");
+                builder.setMessage("Join " + groupName + "? " + "\n" + description[0]);
                 builder.setCancelable(true);
 
                 builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
