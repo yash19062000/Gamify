@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String groupName = listOfGroups.get(position);
+                /*
                 final String[] description = {""};
                 DatabaseReference descRef = groupRef.child(groupName).child("Description");
                 descRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -142,8 +143,10 @@ public class MainActivity extends AppCompatActivity {
                 });
                 Log.i("DESCRIPTION", "Group: " + groupName + " Description: " +
                         description[0]);
+
+                 */
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("Join " + groupName + "? " + "\n" + description[0]);
+                builder.setMessage("Join " + groupName + "? ");
                 builder.setCancelable(true);
 
                 builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
