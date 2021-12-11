@@ -26,11 +26,12 @@ public class GroupManager {
     }
 
 
-    public void createGroup(String groupName, String game, String user, String preference) {
+    public void createGroup(String groupName, String game, String user, String preference, String description) {
         ArrayList<String> users = new ArrayList<>();
         users.add(user);
         mDatabase.child("Groups").child(groupName).child("Game").setValue(game);
         mDatabase.child("Groups").child(groupName).child("Preference").setValue(preference);
+        mDatabase.child("Groups").child(groupName).child("Description").setValue(description);
         usersRef = mDatabase.child("Groups").child("Users");
         /*
         ValueEventListener valueEventListener = new ValueEventListener() {
