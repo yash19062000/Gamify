@@ -63,11 +63,8 @@ public class MainActivity extends AppCompatActivity {
         manager = new GroupManager();
         fAuth = FirebaseAuth.getInstance();
         currentUserID = fAuth.getCurrentUser().getUid();
-
         initFields();
-
         displayGroups();
-
         createGroupButton = (Button) findViewById(R.id.createGroup);
         createGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,10 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(), CreateGroupActivity.class);
                 intent.putExtra("username", fAuth.getCurrentUser().getUid());
                 v.getContext().startActivity(intent);
-
             }
         });
-
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -196,10 +191,7 @@ public class MainActivity extends AppCompatActivity {
                     if(!ifPresentInGroup){
                         set.add(ds.getKey());
                     }
-
-
                 }
-
                 listOfGroups.clear();
                 listOfGroups.addAll(set);
                 arrayAdapter.notifyDataSetChanged();
