@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,7 +31,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserProfile extends AppCompatActivity {
+public class UserProfile extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private FirebaseAuth fAuth;
     private StorageReference storageReference;
@@ -92,5 +96,29 @@ public class UserProfile extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.settings);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit_prof:
+                startActivity(new Intent(getApplicationContext(), EditProfilePage.class));
+                return true;
+            case R.id.logout:
+                Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getApplicationContext(), Login.class));
+                finish();
+                return true;
+            default:
+                return false;
+        }
     }
 }
