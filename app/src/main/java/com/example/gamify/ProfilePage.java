@@ -10,6 +10,7 @@ import androidx.core.content.FileProvider;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,7 +20,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,12 +30,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -158,7 +163,8 @@ public class ProfilePage extends AppCompatActivity {
                     askPermissions();
                 }
                 else if (options[i].equals("Choose from Gallery")) {
-                    Toast.makeText(ProfilePage.this, "Gallery", Toast.LENGTH_SHORT).show();
+                    Intent gallery = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(gallery, GALLERY_REQ_CODE);
                 }
                 else if (options[i].equals("Cancel")) {
                     dialogInterface.dismiss();
@@ -205,25 +211,43 @@ public class ProfilePage extends AppCompatActivity {
                 File photo = new File(currentPhotoPath);
                 Uri contentUri = Uri.fromFile(photo);
                 image.setImageURI(contentUri);
+                Log.d("tag", "Absolute Url of Image is" +  contentUri);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
+                uploadImage(contentUri);
+            }
+        }
+
+        if (requestCode == GALLERY_REQ_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri contentUri = data.getData();
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                String imageFileName = "GAMIFY_" + timeStamp + "." + fileExtension(contentUri);
+                Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
+                image.setImageURI(contentUri);
+                uploadImage(contentUri);
             }
         }
     }
 
+    private String fileExtension(Uri contentUri) {
+        ContentResolver c = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(c.getType(contentUri));
+    }
+
     private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "GAMIFY_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile("prof", ".jpg", storageDir);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         currentPhotoPath = image.getAbsolutePath();
-        Toast.makeText(this, "Uploaded", Toast.LENGTH_SHORT).show();
         return image;
     }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        takePictureIntent.putExtra(MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, CAMERA_REQ_CODE);
             File photoFile = null;
             try {
                 photoFile = createImageFile();
@@ -240,25 +264,25 @@ public class ProfilePage extends AppCompatActivity {
         }
     }
 
-//    private void uploadImage(Uri photo_uri) {
-//        final StorageReference profile_ref = storageReference.child("Users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
-//        profile_ref.putFile(photo_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                profile_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        Picasso.get().load(uri).into(image);
-//                    }
-//                });
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(ProfilePage.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
+    private void uploadImage(Uri photo_uri) {
+        final StorageReference profile_ref = storageReference.child("Users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+        profile_ref.putFile(photo_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                profile_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.get().load(uri).into(image);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ProfilePage.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public void save(View v) {
         databaseReference.child("Users").child(fAuth.getCurrentUser().getUid()).child("Games").setValue(games.getText().toString());
