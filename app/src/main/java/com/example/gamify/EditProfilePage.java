@@ -1,11 +1,22 @@
 package com.example.gamify;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -14,7 +25,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,19 +38,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfilePage extends AppCompatActivity {
 
+    public static final int PERMISSION_CODE_E = 10;
+    public static final int CAMERA_REQ_CODE_E = 11;
+    public static final int GALLERY_REQ_CODE_E = 12;
     private EditText dob, games;
     private CircleImageView image;
     private Spinner preference;
     private ArrayAdapter<String> adapter;
     private String selected_pref;
+    private String currentPhotoPath_e;
     private Button set_picture;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
@@ -59,9 +81,7 @@ public class EditProfilePage extends AppCompatActivity {
         StorageReference img_ref = storageReference.child("Users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
         img_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(image);
-            }
+            public void onSuccess(Uri uri) { Glide.with(EditProfilePage.this).load(uri).into(image); }
         });
 
         String[] items = new String[]{"Online", "Offline"};
@@ -122,6 +142,13 @@ public class EditProfilePage extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+        set_picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
     }
 
     @Override
@@ -136,6 +163,123 @@ public class EditProfilePage extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void selectImage() {
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfilePage.this);
+        builder.setTitle("Set Profile Picture");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (options[i].equals("Take Photo")) {
+                    askPermissions();
+                }
+                else if (options[i].equals("Choose from Gallery")) {
+                    Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(gallery, GALLERY_REQ_CODE_E);
+                }
+                else if (options[i].equals("Cancel")) {
+                    dialogInterface.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void askPermissions() {
+        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                permissions[0]) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                permissions[1]) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                permissions[2]) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,permissions, PERMISSION_CODE_E);
+        }else {
+            dispatchTakePictureIntent();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_CODE_E) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            } else {
+                Toast.makeText(this, "Permissions required to set Profile Picture!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQ_CODE_E) {
+            if (resultCode == Activity.RESULT_OK) {
+                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                File photo = new File(currentPhotoPath_e);
+                Uri contentUri = Uri.fromFile(photo);
+                mediaScanIntent.setData(contentUri);
+                this.sendBroadcast(mediaScanIntent);
+                uploadImage(contentUri);
+            }
+        }
+
+        if (requestCode == GALLERY_REQ_CODE_E) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri contentUri = data.getData();
+                uploadImage(contentUri);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "GAMIFY_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        currentPhotoPath_e = image.getAbsolutePath();
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            if (photoFile != null) {
+                Uri photoURI =  FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA_REQ_CODE_E);
+            }
+        }
+    }
+
+    private void uploadImage(Uri photo_uri) {
+        final StorageReference profile_ref = storageReference.child("Users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+        profile_ref.putFile(photo_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                profile_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) { Glide.with(EditProfilePage.this).load(uri).into(image); }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(EditProfilePage.this, "Failed to upload image.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

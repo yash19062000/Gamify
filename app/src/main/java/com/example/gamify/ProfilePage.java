@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +39,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,9 +80,7 @@ public class ProfilePage extends AppCompatActivity {
         StorageReference img_ref = storageReference.child("Users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
         img_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(image);
-            }
+            public void onSuccess(Uri uri) { Glide.with(ProfilePage.this).load(uri).into(image); }
         });
 
         String[] items = new String[]{"Online", "Offline"};
@@ -210,8 +208,6 @@ public class ProfilePage extends AppCompatActivity {
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 File photo = new File(currentPhotoPath);
                 Uri contentUri = Uri.fromFile(photo);
-                image.setImageURI(contentUri);
-                Log.d("tag", "Absolute Url of Image is" +  contentUri);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
                 uploadImage(contentUri);
@@ -221,19 +217,9 @@ public class ProfilePage extends AppCompatActivity {
         if (requestCode == GALLERY_REQ_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 Uri contentUri = data.getData();
-                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                String imageFileName = "GAMIFY_" + timeStamp + "." + fileExtension(contentUri);
-                Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
-                image.setImageURI(contentUri);
                 uploadImage(contentUri);
             }
         }
-    }
-
-    private String fileExtension(Uri contentUri) {
-        ContentResolver c = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(c.getType(contentUri));
     }
 
     private File createImageFile() throws IOException {
@@ -271,9 +257,7 @@ public class ProfilePage extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 profile_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(image);
-                    }
+                    public void onSuccess(Uri uri) { Glide.with(ProfilePage.this).load(uri).into(image); }
                 });
             }
         }).addOnFailureListener(new OnFailureListener() {

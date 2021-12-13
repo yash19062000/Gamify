@@ -6,15 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,10 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfile extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
@@ -59,9 +53,7 @@ public class UserProfile extends AppCompatActivity implements PopupMenu.OnMenuIt
         StorageReference img_ref = storageReference.child("Users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
         img_ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(image);
-            }
+            public void onSuccess(Uri uri) { Glide.with(UserProfile.this).load(uri).into(image); }
         });
 
         databaseReference.addValueEventListener(new ValueEventListener() {
