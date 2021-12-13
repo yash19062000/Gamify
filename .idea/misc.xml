@@ -7,18 +7,21 @@
         <entry key="..\:/Users/Patron/AndroidStudioProjects/Gamify/app/src/main/res/layout/activity_main.xml" value="0.17798913043478262" />
         <entry key="..\:/Users/Patron/AndroidStudioProjects/Gamify/app/src/main/res/layout/activity_profile_page.xml" value="0.17798913043478262" />
         <entry key="..\:/Users/Patron/AndroidStudioProjects/Gamify/app/src/main/res/layout/activity_user_profile.xml" value="0.17798913043478262" />
+        <entry key="app/src/main/res/drawable/background.xml" value="0.13333333333333333" />
         <entry key="app/src/main/res/drawable/ic_date.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/drawable/receiver_messages_layout.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/drawable/sender_messages_layout.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.25052083333333336" />
         <entry key="app/src/main/res/layout/activity_chat_list.xml" value="0.17481884057971014" />
         <entry key="app/src/main/res/layout/activity_create_group.xml" value="0.23125" />
-        <entry key="app/src/main/res/layout/activity_group_chat.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/activity_group_chat.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2643357314763062" />
+        <entry key="app/src/main/res/layout/activity_profile_page.xml" value="0.1171875" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.1887031408308004" />
         <entry key="app/src/main/res/layout/activity_user_profile.xml" value="0.16770833333333332" />
-        <entry key="app/src/main/res/layout/custom_messages_layout.xml" value="0.5079462451635967" />
+        <entry key="app/src/main/res/layout/custom_messages_layout.xml" value="0.32142857142857145" />
+        <entry key="app/src/main/res/layout/toolbar.xml" value="0.1171875" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.2256190411576116" />
         <entry key="app/src/main/res/menu/menu_1.xml" value="0.2546875" />
       </map>

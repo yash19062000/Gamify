@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e6e6fa"
     tools:context=".GroupChat">
 
 
@@ -18,15 +19,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/chat_bar"
+        android:layout_above="@+id/linear_layout5"
         android:layout_marginBottom="6dp"></androidx.recyclerview.widget.RecyclerView>
 
-    <ScrollView
-        android:id="@+id/scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp">
-
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linear_layout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,42 +31,25 @@
             android:background="@android:color/background_light"
             android:orientation="horizontal">
 
-
             <EditText
                 android:id="@+id/group_message"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLines="5"
+                android:layout_toStartOf="@+id/sendButton"
                 android:hint="Write your message here"
-                android:padding="17dp" />
+                android:padding="15dp" />
 
             <ImageButton
                 android:id="@+id/sendButton"
                 android:layout_width="63dp"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@android:color/white"
                 android:src="@drawable/ic_baseline_send_24"/>
 
-            <TextView
-                android:id="@+id/text_display"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="50dp"
-                android:padding="10dp"
-                android:textAllCaps="false"
-                android:textColor="@android:color/background_dark"
-                android:textSize="10sp" />
-        </LinearLayout>
-    </ScrollView>
-<!--    <LinearLayout-->
-<!--        android:id="@+id/linear_layout4"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignParentStart="true">-->
 
 
-<!--    </LinearLayout>-->
+        </RelativeLayout>
+
 </RelativeLayout>

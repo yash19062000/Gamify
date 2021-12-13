@@ -72,7 +72,7 @@ public class GroupChat extends AppCompatActivity {
             public void onClick(View view) {
                 SaveMessage();
                 userMessage.setText("");
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                //scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
     }
@@ -124,7 +124,7 @@ public class GroupChat extends AppCompatActivity {
             newMessage = new Messages(uName, message, msgID);
             messageList.add(newMessage);
             messageAdapter.notifyDataSetChanged();
-            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            //scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
     }
 
@@ -180,8 +180,8 @@ public class GroupChat extends AppCompatActivity {
         getSupportActionBar().setTitle(groupName);
         sendMessageBtn = (ImageButton) findViewById(R.id.sendButton);
         userMessage = (EditText) findViewById(R.id.group_message);
-        scrollView = (ScrollView) findViewById(R.id.scrollview);
-        displayMessage = (TextView)findViewById(R.id.text_display);
+        //scrollView = (ScrollView) findViewById(R.id.scrollview);
+//        displayMessage = (TextView)findViewById(R.id.text_display);
         messageAdapter = new MessageAdapter(messageList);
         userMessagesList = (RecyclerView)findViewById(R.id.private_messages_list_of_users);
         linearLayoutManager = new LinearLayoutManager(this);

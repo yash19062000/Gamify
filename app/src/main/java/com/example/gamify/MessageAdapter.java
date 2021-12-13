@@ -64,11 +64,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if(dataSnapshot.hasChild("image")){
-//                    String receiverImage = dataSnapshot.child("image").getValue().toString();
-//                    Picasso.get().load(receiverImage).placeholder(R.drawable.background_profile)
-//                            .into(messageViewHolder.receiverProfileImage);
-//                }
             }
 
             @Override
@@ -84,7 +79,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if(fromUserID.equals(messageSenderId)){
                 messageViewHolder.senderMessageText.setBackgroundResource(R.drawable.sender_messages_layout);
                 messageViewHolder.senderMessageText.setTextColor(Color.BLACK);
-                messageViewHolder.senderMessageText.setText(messages.getMessage());
+                messageViewHolder.senderMessageText.setText(messages.getFrom()+ ": \n"+ messages.getMessage());
             }
             else{
                 messageViewHolder.senderMessageText.setVisibility(View.INVISIBLE);
@@ -93,7 +88,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                 messageViewHolder.receiverMessageText.setBackgroundResource(R.drawable.receiver_messages_layout);
                 messageViewHolder.receiverMessageText.setTextColor(Color.BLACK);
-                messageViewHolder.receiverMessageText.setText(messages.getMessage());
+                messageViewHolder.receiverMessageText.setText(messages.getFrom()+ ": \n"+ messages.getMessage());
             }
         //}
         }
