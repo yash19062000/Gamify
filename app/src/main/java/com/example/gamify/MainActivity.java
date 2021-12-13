@@ -48,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        /*
         toolbar = (Toolbar)findViewById(R.id.chat_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Search New Groups");
-
+        */
 
 
         groupRef = FirebaseDatabase.getInstance().getReference().child("Groups");
