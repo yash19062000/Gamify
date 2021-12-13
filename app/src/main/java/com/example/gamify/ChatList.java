@@ -1,11 +1,5 @@
 package com.example.gamify;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,6 +8,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -38,6 +37,7 @@ public class ChatList extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String currentUserID;
     private Toolbar toolbar;
+    private HashMap<String,String> hm = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +57,9 @@ public class ChatList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String currGroupName = parent.getItemAtPosition(position).toString();
-
                 Intent groupChatIntent = new Intent(getApplicationContext(),GroupChat.class);
                 groupChatIntent.putExtra("name",currGroupName);
+                groupChatIntent.putExtra("key", hm.get(currGroupName));
                 startActivity(groupChatIntent);
             }
         });
@@ -106,6 +106,7 @@ public class ChatList extends AppCompatActivity {
                 while(it.hasNext()) {
 //                    set.add(((DataSnapshot) it.next()).getKey());
                     DataSnapshot ds = (DataSnapshot) it.next();
+                    String grpName = (String)ds.getKey();
                     Iterator it1 = ds.getChildren().iterator();
                     Iterator it2 = null;
                     while(it1.hasNext()){
@@ -113,8 +114,10 @@ public class ChatList extends AppCompatActivity {
                     }
                     boolean ifPresentInGroup = false;
                     while(it2.hasNext()){
-                        String uKey = (String) ((DataSnapshot)it2.next()).getValue();
+                        DataSnapshot d1 = (DataSnapshot)it2.next();
+                        String uKey = (String) d1.getValue();
                         if(uKey.compareTo(currentUserID)==0){
+                            hm.put(grpName, (String) d1.getKey());
                             ifPresentInGroup=true;
                             break;
                         }
@@ -122,10 +125,7 @@ public class ChatList extends AppCompatActivity {
                     if(ifPresentInGroup){
                         set.add(ds.getKey());
                     }
-
-
                 }
-
                 listOfGroups.clear();
                 listOfGroups.addAll(set);
                 arrayAdapter.notifyDataSetChanged();

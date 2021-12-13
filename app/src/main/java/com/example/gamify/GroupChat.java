@@ -1,13 +1,9 @@
 package com.example.gamify;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -16,7 +12,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,10 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 public class GroupChat extends AppCompatActivity {
-
     private Toolbar toolbar;
     private ImageButton sendMessageBtn;
     private EditText userMessage;
@@ -42,6 +40,8 @@ public class GroupChat extends AppCompatActivity {
     private String currentUserID, currentUserName,currentDate, currentTime;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference UsersRef,GroupNameRef,GroupMessageKeyRef;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +56,16 @@ public class GroupChat extends AppCompatActivity {
         GroupNameRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName).child("Messages");
 
         InitFields();
-
         GetUserInfo();
 
         sendMessageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SaveMessage();
-
                 userMessage.setText("");
                 scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
-
-
-
-
     }
 
     @Override
@@ -119,7 +113,6 @@ public class GroupChat extends AppCompatActivity {
             String time = (String) ((DataSnapshot)iterator.next()).getValue();
 
             displayMessage.append(uName+":\n"+message+"\n"+time+" "+date+"\n\n\n");
-
             scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
     }
@@ -142,6 +135,7 @@ public class GroupChat extends AppCompatActivity {
             HashMap<String,Object> groupMessage = new HashMap<>();
             GroupNameRef.updateChildren(groupMessage);
 
+
             GroupMessageKeyRef = GroupNameRef.child(messageKey);
 
             HashMap<String, Object> messageInfoMap = new HashMap<>();
@@ -163,16 +157,13 @@ public class GroupChat extends AppCompatActivity {
                     currentUserName=snapshot.child("Username").getValue().toString();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
     private void InitFields() {
-
         toolbar = (Toolbar)findViewById(R.id.chat_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(groupName);
@@ -180,5 +171,21 @@ public class GroupChat extends AppCompatActivity {
         userMessage = (EditText) findViewById(R.id.group_message);
         scrollView = (ScrollView) findViewById(R.id.scrollview);
         displayMessage = (TextView)findViewById(R.id.text_display);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_1, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.leave){
+            FirebaseDatabase.getInstance().getReference().child("Groups").child(groupName).child("Users").child(getIntent().getExtras().get("key").toString()).removeValue();
+            startActivity(new Intent(getApplicationContext(),ChatList.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
