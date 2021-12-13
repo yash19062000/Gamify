@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -26,9 +28,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 public class GroupChat extends AppCompatActivity {
     private Toolbar toolbar;
@@ -41,6 +45,11 @@ public class GroupChat extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference UsersRef,GroupNameRef,GroupMessageKeyRef;
 
+    private final List<Messages> messageList = new ArrayList<>();
+    private LinearLayoutManager linearLayoutManager;
+    private MessageAdapter messageAdapter;
+    private RecyclerView userMessagesList;
+    private Messages newMessage;
 
 
     @Override
@@ -63,7 +72,7 @@ public class GroupChat extends AppCompatActivity {
             public void onClick(View view) {
                 SaveMessage();
                 userMessage.setText("");
-                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                //scrollView.fullScroll(ScrollView.FOCUS_DOWN);
             }
         });
     }
@@ -71,7 +80,6 @@ public class GroupChat extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         GroupNameRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -107,13 +115,16 @@ public class GroupChat extends AppCompatActivity {
     private void DisplayAllMessage(DataSnapshot snapshot) {
         Iterator iterator = snapshot.getChildren().iterator();
         while(iterator.hasNext()){
+            String msgID = (String) ((DataSnapshot)iterator.next()).getValue();
             String uName = (String) ((DataSnapshot)iterator.next()).getValue();
             String date = (String) ((DataSnapshot)iterator.next()).getValue();
             String message = (String) ((DataSnapshot)iterator.next()).getValue();
             String time = (String) ((DataSnapshot)iterator.next()).getValue();
 
-            displayMessage.append(uName+":\n"+message+"\n"+time+" "+date+"\n\n\n");
-            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            newMessage = new Messages(uName, message, msgID);
+            messageList.add(newMessage);
+            messageAdapter.notifyDataSetChanged();
+            //scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         }
     }
 
@@ -143,7 +154,7 @@ public class GroupChat extends AppCompatActivity {
             messageInfoMap.put("message",input);
             messageInfoMap.put("date",currentDate);
             messageInfoMap.put("time",currentTime);
-
+            messageInfoMap.put("SenderID",currentUserID);
             GroupMessageKeyRef.updateChildren(messageInfoMap);
 
         }
@@ -169,8 +180,13 @@ public class GroupChat extends AppCompatActivity {
         getSupportActionBar().setTitle(groupName);
         sendMessageBtn = (ImageButton) findViewById(R.id.sendButton);
         userMessage = (EditText) findViewById(R.id.group_message);
-        scrollView = (ScrollView) findViewById(R.id.scrollview);
-        displayMessage = (TextView)findViewById(R.id.text_display);
+        //scrollView = (ScrollView) findViewById(R.id.scrollview);
+//        displayMessage = (TextView)findViewById(R.id.text_display);
+        messageAdapter = new MessageAdapter(messageList);
+        userMessagesList = (RecyclerView)findViewById(R.id.private_messages_list_of_users);
+        linearLayoutManager = new LinearLayoutManager(this);
+        userMessagesList.setLayoutManager(linearLayoutManager);
+        userMessagesList.setAdapter(messageAdapter);
     }
 
     @Override

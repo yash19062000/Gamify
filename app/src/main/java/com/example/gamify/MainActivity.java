@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private GroupManager manager;
     private FirebaseAuth fAuth;
     private String currentUserID;
+    //the current state of the user
+    private String current_state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         groupsListView = (ListView) findViewById(R.id.listView);
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfGroups);
         groupsListView.setAdapter(arrayAdapter);
+        current_state = "new";
 
         groupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -138,11 +141,11 @@ public class MainActivity extends AppCompatActivity {
                 builder.setMessage("Join " + groupName + "? ");
                 builder.setCancelable(true);
 
+
                 builder.setPositiveButton("Join", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         manager.joinGroup(groupName, currentUserID);
-
                         dialog.cancel();
                     }
                 });

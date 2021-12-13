@@ -4,61 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e6e6fa"
     tools:context=".GroupChat">
+
+
 
     <include
         android:id="@+id/chat_bar"
         layout="@layout/toolbar">
     </include>
 
-    <ScrollView
-        android:id="@+id/scrollview"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/private_messages_list_of_users"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/chat_bar"
+        android:layout_above="@+id/linear_layout5"
+        android:layout_marginBottom="6dp"></androidx.recyclerview.widget.RecyclerView>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linear_layout5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/background_light"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/text_display"
+            <EditText
+                android:id="@+id/group_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:layout_marginBottom="50dp"
-                android:padding="10dp"
-                android:textAllCaps="false"
-                android:textColor="@android:color/background_dark"
-                android:textSize="10sp" />
+                android:maxLines="5"
+                android:layout_toStartOf="@+id/sendButton"
+                android:hint="Write your message here"
+                android:padding="15dp" />
 
-        </LinearLayout>
-    </ScrollView>
+            <ImageButton
+                android:id="@+id/sendButton"
+                android:layout_width="63dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="@android:color/white"
+                android:src="@drawable/ic_baseline_send_24"/>
 
 
-    <LinearLayout
-        android:id="@+id/linear_layout4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
 
-        <EditText
-            android:id="@+id/group_message"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:hint="Write your message here"
-            android:padding="17dp" />
+        </RelativeLayout>
 
-        <ImageButton
-            android:id="@+id/sendButton"
-            android:layout_width="63dp"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:src="@drawable/ic_baseline_send_24" />
-    </LinearLayout>
 </RelativeLayout>

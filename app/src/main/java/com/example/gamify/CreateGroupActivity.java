@@ -1,7 +1,5 @@
 package com.example.gamify;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,8 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import java.util.HashMap;
-import java.util.Map;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateGroupActivity extends AppCompatActivity {
 
@@ -50,6 +47,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         game = (EditText) findViewById(R.id.game_edit);
         create = (Button) findViewById(R.id.button_confirm);
         descEditText = (EditText) findViewById(R.id.description);
+
 
         manager = new GroupManager();
 
