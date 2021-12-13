@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         groupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String groupName = listOfGroups.get(position);
+                String groupName = arrayAdapter.getItem(position);
                 /*
                 final String[] description = {""};
                 DatabaseReference descRef = groupRef.child(groupName).child("Description");
