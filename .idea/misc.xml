@@ -4,18 +4,25 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/drawable/background.xml" value="0.2578125" />
+        <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/drawable/bottom_nav_icon_color_selector.xml" value="0.2578125" />
+        <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/drawable/ic_baseline_chat_24.xml" value="0.2578125" />
+        <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.2578125" />
+        <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/drawable/ic_baseline_send_24.xml" value="0.2578125" />
+        <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/drawable/ic_date.xml" value="0.2578125" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2578125" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_chat_list.xml" value="0.12771739130434784" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_create_group.xml" value="0.24166666666666667" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_edit_profile_page.xml" value="0.24166666666666667" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_group_chat.xml" value="0.24166666666666667" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_login.xml" value="0.12771739130434784" />
-        <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_main.xml" value="0.24166666666666667" />
+        <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_profile_page.xml" value="0.12952898550724637" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_register.xml" value="0.12952898550724637" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/activity_user_profile.xml" value="0.15625" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/custom_messages_layout.xml" value="0.24166666666666667" />
         <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/layout/toolbar.xml" value="0.24166666666666667" />
+        <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/menu/menu.xml" value="0.24166666666666667" />
+        <entry key="..\:/Asus Zenbook/D Drive/Work/CS_407/Labs/Gamify/app/src/main/res/menu/menu_1.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/Patron/AndroidStudioProjects/Gamify/app/src/main/res/layout/activity_create_group.xml" value="0.17798913043478262" />
         <entry key="..\:/Users/Patron/AndroidStudioProjects/Gamify/app/src/main/res/layout/activity_main.xml" value="0.17798913043478262" />
         <entry key="..\:/Users/Patron/AndroidStudioProjects/Gamify/app/src/main/res/layout/activity_profile_page.xml" value="0.17798913043478262" />
